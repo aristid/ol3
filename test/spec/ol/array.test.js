@@ -2,6 +2,105 @@ goog.provide('ol.test.array');
 
 describe('ol.array', function() {
 
+  describe('binarySearch', function() {
+
+    var insertionPoint = function(position) {
+      return -(position + 1);
+    };
+
+    describe('default comparison on array of String(s)', function() {
+      var a = [
+        '1000', '9', 'AB', 'ABC', 'ABCABC', 'ABD', 'ABDA', 'B', 'B', 'B',
+        'C', 'CA', 'CC', 'ZZZ', 'ab', 'abc', 'abcabc', 'abd', 'abda', 'b',
+        'c', 'ca', 'cc', 'zzz'
+      ];
+
+      it('should find \'1000\' at index 0', function() {
+        expect(ol.array.binarySearch(a, '1000')).to.be(0);
+      });
+      it('should find \'zzz\' at index ' + (a.length - 1), function() {
+        expect(ol.array.binarySearch(a, 'zzz')).to.be(a.length - 1);
+      });
+      it('should find \'C\' at index 10', function() {
+        expect(ol.array.binarySearch(a, 'C')).to.be(10);
+      });
+      it('should find \'B\' at index 7 || 8 || 9', function() {
+        var pos = ol.array.binarySearch(a, 'B');
+        expect(pos == 7 || pos == 8 || pos == 9).to.be.ok();
+      });
+      it('should not find \'100\'', function() {
+        var pos = ol.array.binarySearch(a, '100');
+        expect(pos < 0).to.be.ok();
+      });
+      it('should have an insertion point of 0 for \'100\'', function() {
+        var pos = ol.array.binarySearch(a, '100');
+        expect(insertionPoint(pos)).to.be(0);
+      });
+      it('should not find \'zzz0\'', function() {
+        var pos = ol.array.binarySearch(a, 'zzz0');
+        expect(pos < 0).to.be.ok();
+      });
+      it('should have an insertion point of ' + (a.length) + ' for \'zzz0\'',
+        function() {
+          var pos = ol.array.binarySearch(a, 'zzz0');
+          expect(insertionPoint(pos)).to.be(a.length);
+        }
+      );
+      it('should not find \'BA\'', function() {
+        var pos = ol.array.binarySearch(a, 'zzz0');
+        expect(pos < 0).to.be.ok();
+      });
+      it('should have an insertion point of 10 for \'BA\'',
+        function() {
+          var pos = ol.array.binarySearch(a, 'BA');
+          expect(insertionPoint(pos)).to.be(10);
+        }
+      );
+    });
+
+    describe('0 length array with default comparison', function() {
+      var b = [];
+      it('should not find \'a\'', function() {
+        expect(ol.array.binarySearch(b, 'a') < 0).to.be.ok();
+      });
+      it('should have an insertion point of 0 for \'a\'',
+        function() {
+          var pos = ol.array.binarySearch(b, 'a');
+          expect(insertionPoint(pos)).to.be(0);
+        }
+      );
+    });
+
+    describe('single element array with default lexiographical comparison',
+      function() {
+        var c = ['only item'];
+        it('should find \'only item\' at index 0', function() {
+          expect(ol.array.binarySearch(c, 'only item')).to.be(0);
+        });
+        it('should not find \'a\'', function() {
+          expect(ol.array.binarySearch(c, 'a') < 0).to.be.ok();
+        });
+        it('should have an insertion point of 0 for \'a\'',
+          function() {
+            var pos = ol.array.binarySearch(c, 'a');
+            expect(insertionPoint(pos)).to.be(0);
+          }
+        );
+        it('should not find \'z\'', function() {
+          expect(ol.array.binarySearch(c, 'z') < 0).to.be.ok();
+        });
+        it('should have an insertion point of 1 for \'z\'',
+          function() {
+            var pos = ol.array.binarySearch(c, 'z');
+            expect(insertionPoint(pos)).to.be(1);
+          }
+        );
+      }
+    );
+
+  });
+
+
   describe('binaryFindNearest', function() {
     it('returns expected value', function() {
       var arr = [1000, 500, 100];
@@ -22,6 +121,30 @@ describe('ol.array', function() {
       expect(ol.array.binaryFindNearest(arr, 100)).to.eql(2);
       expect(ol.array.binaryFindNearest(arr, 50)).to.eql(2);
     });
+  });
+
+  describe('extend', function() {
+    // TODO
+  });
+
+  describe('equals', function() {
+    // TODO
+  });
+
+  describe('find', function() {
+    // TODO
+  });
+
+  describe('findIndex', function() {
+    // TODO
+  });
+
+  describe('flatten', function() {
+    // TODO
+  });
+
+  describe('isSorted', function() {
+    // TODO
   });
 
   describe('linearFindNearest', function() {
@@ -83,6 +206,10 @@ describe('ol.array', function() {
     });
   });
 
+  describe('remove', function() {
+    // TODO
+  });
+
   describe('reverseSubArray', function() {
     it('returns expected value', function() {
       var arr;
@@ -105,6 +232,11 @@ describe('ol.array', function() {
       expect(arr).to.eql(expected);
     });
   });
+
+  describe('stableSort', function() {
+    // TODO
+  });
+
 });
 
 goog.require('ol.array');
