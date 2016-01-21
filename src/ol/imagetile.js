@@ -126,11 +126,13 @@ ol.ImageTile.prototype.handleImageError_ = function() {
  * @private
  */
 ol.ImageTile.prototype.handleImageLoad_ = function() {
-  if (this.image_.naturalWidth && this.image_.naturalHeight) {
+  if (goog.userAgent.IE && this.image_.complete ||
+      this.image_.naturalWidth && this.image_.naturalHeight) {
     this.state = ol.TileState.LOADED;
   } else {
     this.state = ol.TileState.EMPTY;
   }
+  
   this.unlistenImage_();
   this.changed();
 };
